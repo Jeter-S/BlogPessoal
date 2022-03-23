@@ -9,49 +9,46 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 @Table(name = "tb_temas")
-public class Tema {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Tema{
+	    
+	    @Id	
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long id;
+		
+		@NotBlank(message = "O atributo Descrição é obrigatório e não pode conter espaços em branco")
+		private String descricao;
+		
+		@OneToMany(mappedBy = "tema", cascade = CascadeType.REMOVE)
+		@JsonIgnoreProperties("tema")
+		private List<Postagem> postagem;
+		
+		public Long getId() {
+			return id;
+		}
 
-	@NotNull(message = "O atributo Descrição é obrigatório")
-	private String descricao;
+		public void setId(Long id) {
+			this.id = id;
+		}
 
-    @OneToMany(mappedBy = "tema", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("tema")
-	private List<Postagem> postagem;
+		public String getDescricao() {
+			return descricao;
+		}
 
-	/*Insira os Getters and Setters*/
+		public void setDescricao(String descricao) {
+			this.descricao = descricao;
+		}
 
-	public Long getId() {
-		return this.id;
-	}
+		public List<Postagem> getPostagem() {
+			return postagem;
+		}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getDescricao() {
-		return this.descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-    public List<Postagem> getPostagem() {
-        return this.postagem;
-    }
-
-    public void setPostagem(List<Postagem> postagem) {
-        this.postagem = postagem;
-    }
-
+		public void setPostagem(List<Postagem> postagem) {
+			this.postagem = postagem;
+		}
+		
 }
